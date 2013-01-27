@@ -1,30 +1,9 @@
-" Only do this when not done yet for this buffer
-if exists("b:did_ftplugin")
-finish
-endif
-let b:did_ftplugin = 1
+setlocal foldmethod=expr
+setlocal foldexpr=PythonFoldExpr(v:lnum)
+setlocal foldtext=PythonFoldText()
 
-map <buffer> <S-e> :w<CR>:!/usr/bin/env python % <CR>
-map <buffer> gd /def <C-R><C-W><CR> 
-
-set foldmethod=expr
-set foldexpr=PythonFoldExpr(v:lnum)
-set foldtext=PythonFoldText()
-
-map <buffer> f za
-map <buffer> F :call ToggleFold()<CR>
-let b:folded = 1
-
-function! ToggleFold()
-    if( b:folded == 0 )
-        exec "normal! zM"
-        let b:folded = 1
-    else
-        exec "normal! zR"
-        let b:folded = 0
-    endif
-endfunction
-
+" Only do this once
+if exists('*PythonFoldText()') finish
 function! PythonFoldText()
 
     let size = 1 + v:foldend - v:foldstart
@@ -73,13 +52,13 @@ function! PythonFoldExpr(lnum)
 endfunction
 
 " In case folding breaks down
-function! ReFold()
-    set foldmethod=expr
-    set foldexpr=0
-    set foldnestmax=1
-    set foldmethod=expr
-    set foldexpr=PythonFoldExpr(v:lnum)
-    set foldtext=PythonFoldText()
-    echo 
+function! PythonReFold()
+    setlocal foldmethod=expr
+    setlocal foldexpr=0
+    setlocal foldnestmax=1
+    setlocal foldmethod=expr
+    setlocal foldexpr=PythonFoldExpr(v:lnum)
+    setlocal foldtext=PythonFoldText()
+    redraw!
 endfunction
 
