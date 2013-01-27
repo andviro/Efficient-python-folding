@@ -3,7 +3,10 @@ setlocal foldexpr=PythonFoldExpr(v:lnum)
 setlocal foldtext=PythonFoldText()
 
 " Only do this once
-if exists('*PythonFoldText()') finish
+if exists('*PythonFoldText()')
+    finish
+endif
+    
 function! PythonFoldText()
 
     let size = 1 + v:foldend - v:foldstart
